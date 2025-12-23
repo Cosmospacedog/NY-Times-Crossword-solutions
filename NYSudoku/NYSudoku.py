@@ -27,7 +27,6 @@ class NYSudoku():
 
         return html
 
-
     async def getboard(self):
         html = await self.gethtml()
         soup = BeautifulSoup(html, "html.parser")
@@ -39,8 +38,7 @@ class NYSudoku():
 
         board = np.array(board)
         board = board.astype(object)
-        board[board == 'empty'] = None
-        board = np.array([int(x) if x is not None else None for x in board], dtype=object)
+        board = np.array([int(x) if x != 'empty' else None for x in board], dtype=object)
         n = int(np.sqrt(board.size))
         board = np.array(board)
         board = board.reshape(n,n)

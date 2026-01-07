@@ -2,6 +2,7 @@ import numpy as np
 from playwright.async_api import async_playwright
 from bs4 import BeautifulSoup
 import asyncio
+import sys
 
 class NYSudoku():
     def __init__(self,url):
@@ -71,6 +72,7 @@ def solve(board):
                     board = np.array(board)
                     board[ri][vi] = i
                     if verify(board):
+                        showboard(board)
                         result = solve(board)
                         if result is not None:
                             return result
@@ -78,3 +80,17 @@ def solve(board):
     if verify (board):
         return board
     return None
+
+def format_board(board):
+    """Return a string of the board, one row per line."""
+    lines = []
+    for row in board:
+        # replace None with . for empty cells
+        line = " ".join(str(num) if num is not None else "." for num in row)
+        lines.append(line)
+    return "\n".join(lines)
+
+def showboard(board):
+    print(format_board(board))
+    if not(all(all(cell is not None for cell in row) for row in board)):
+        print(f"\033[{len(board)}A", end="")
